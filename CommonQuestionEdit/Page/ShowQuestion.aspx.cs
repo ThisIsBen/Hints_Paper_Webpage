@@ -53,6 +53,19 @@ namespace AuthoringTool.CommonQuestionEdit
         public string Language = "0";
         private string strQID = "";
         private string strGroupID = "";
+        
+        //Ben 2017 11 3 存心分組
+        private void ShowSaveAsNewBtn()
+        {
+
+            // show "Save as new question" if the page is  currently used to modify existing question
+            if ((Request.QueryString["bModify"] == "True") || (Session["bModify"].ToString() == "True"))
+            {
+                btSaveNew.Visible = true;
+
+            }
+
+        }
 
 		protected void Page_Load(object sender, System.EventArgs e)
 		{
@@ -67,6 +80,9 @@ namespace AuthoringTool.CommonQuestionEdit
             //朱君 增加編輯特徵值屬性表格
             this.FindControl("PanelFeature").Controls.Add(LayoutTableForFeature);
             this.FindControl("Form1").Controls.Add(this.getEditQuestionButton());
+
+            //Ben 2017 11 3 存心分組
+            ShowSaveAsNewBtn();
 		}
 
 		#region Web Form 設計工具產生的程式碼
@@ -131,29 +147,33 @@ namespace AuthoringTool.CommonQuestionEdit
                
             }
 
-            //When generating a new 選擇題 (if the Opener is Paper_QuestionTypeNew), set Previous page  as Paper_QuestionTypeNew
-            if (Request.QueryString["Opener"].ToString() == "Paper_QuestionTypeNew")
+            if (Request.QueryString["Opener"]!=null)
             {
 
+            
+                //When generating a new 選擇題 (if the Opener is Paper_QuestionTypeNew), set Previous page  as Paper_QuestionTypeNew
+                if (Request.QueryString["Opener"].ToString() == "Paper_QuestionTypeNew")
+                {
 
-                hiddenOpener.Value = Request.QueryString["Opener"].ToString();
-                /*
-                ////use JS alert() in C#
-                ScriptManager.RegisterStartupScript(
-                 this,
-                 typeof(Page),
-                 "Alert",
-                 "<script>alert('" + Session["PreviousPageURL"].ToString() + "');</script>",
-                 false);
-                ///////
-                */
+
+                    hiddenOpener.Value = Request.QueryString["Opener"].ToString();
+                    /*
+                    ////use JS alert() in C#
+                    ScriptManager.RegisterStartupScript(
+                     this,
+                     typeof(Page),
+                     "Alert",
+                     "<script>alert('" + Session["PreviousPageURL"].ToString() + "');</script>",
+                     false);
+                    ///////
+                    */
+                }
+
+                if (Request.QueryString["Opener"].ToString() == "Paper_MainPage")
+                {
+                    hiddenOpener.Value = Session["PreviousPageURL"].ToString();
+                }
             }
-
-            if (Request.QueryString["Opener"].ToString() == "Paper_MainPage")
-            {
-                hiddenOpener.Value = Session["PreviousPageURL"].ToString();
-            }
-
 
                 //Setup opener
                 if (Session["Opener"] != null)

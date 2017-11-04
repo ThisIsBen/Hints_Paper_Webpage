@@ -60,6 +60,20 @@ namespace PaperSystem
         protected System.Web.UI.WebControls.Table LayoutTableForFeature = new Table();
         SqlDB sqldb = new SqlDB(System.Configuration.ConfigurationSettings.AppSettings["connstr"]);
 
+
+        //Ben 2017 11 3 存心分組
+        private void ShowSaveAsNewBtn()
+        {
+            
+            // show "Save as new question" if the page is  currently used to modify existing question
+            if ((Request.QueryString["bModify"] == "True") || (Session["bModify"].ToString() == "True"))
+            {
+                btSaveNew.Visible = true;
+
+            }
+
+        }
+
         protected void Page_Load(object sender, System.EventArgs e)
         {
             this.Initiate();
@@ -141,6 +155,13 @@ namespace PaperSystem
             hrAnswer.Style.Add("display", "none");
             BulidInterrogation("Question");
             BulidInterrogation("Answer");
+
+            //Ben 2017 11 3 存心分組
+            ShowSaveAsNewBtn();
+            
+         
+
+
         }
 
         /// <summary>

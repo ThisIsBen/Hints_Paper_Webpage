@@ -260,7 +260,14 @@
                 <input id="btnNext" style="width: 150px; cursor: hand; height: 30px" onclick="NextStep()"
                     type="button" value="Next >>" name="btnNext" class="button_continue" onclick="return btnNext_onclick()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:Button ID="btSaveNew" runat="server" Text="Save as a new question" CssClass="button_continue" Visible="false"
+
+
+                <%--2017 11 3 Ben 另存新題--%>
+               <%-- <asp:Button ID="btSaveNew" runat="server" Text="Save as a new question" CssClass="button_continue" Visible="false"
+                    Style="width: 200px; cursor: hand; height: 30px;" OnClick="btSaveNew_Click" OnClientClick="SaveNew()" />--%>
+
+
+                 <asp:Button ID="btSaveNew" runat="server" Text="Save as a new question" CssClass="button_continue" Visible="false"
                     Style="width: 200px; cursor: hand; height: 30px;" OnClick="btSaveNew_Click" OnClientClick="SaveNew()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
             </td>

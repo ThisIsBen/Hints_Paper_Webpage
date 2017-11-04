@@ -2688,10 +2688,10 @@ namespace PaperSystem
             //另存新題Ben2017 11 3
             
             //呼叫Paper_TextQuestionEditor.aspx
-            Response.Redirect("Paper_TextQuestionEditorNew.aspx?QID=" + strQID + "&Opener=Paper_MainPage");
+            //Response.Redirect("Paper_TextQuestionEditorNew.aspx?QID=" + strQID + "&Opener=Paper_MainPage");
             
             //呼叫Paper_TextQuestionEditor.aspx
-            //Response.Redirect("Paper_TextQuestionEditorNew.aspx?QID=" + strQID + "&Opener=Paper_MainPage&StoreAsNew=Yes");
+            Response.Redirect("Paper_TextQuestionEditorNew.aspx?QID=" + strQID + "&Opener=Paper_MainPage&bModify=True");
         }
 
         private void btnDeleteText_Click(object sender, EventArgs e)

@@ -43,6 +43,8 @@ namespace AuthoringTool.CommonQuestionEdit
         private string strQID = "";
         private string strGroupID = "";
 
+
+
         protected void Page_Load(object sender, System.EventArgs e)
         {
             this.Initiate();
@@ -56,8 +58,23 @@ namespace AuthoringTool.CommonQuestionEdit
             //朱君 增加編輯特徵值屬性表格
             this.FindControl("PanelFeature").Controls.Add(LayoutTableForFeature);
             this.FindControl("Form1").Controls.Add(this.getEditQuestionButton());
+            
+            
+            //Ben 2017 11 3 存心分組
+            ShowSaveAsNewBtn();
         }
+        //Ben 2017 11 3 存心分組
+        private void ShowSaveAsNewBtn()
+        {
 
+            // show "Save as new question" if the page is  currently used to modify existing question
+            if ((Request.QueryString["bModify"] == "True") || (Session["bModify"].ToString() == "True"))
+            {
+                btSaveNew.Visible = true;
+
+            }
+
+        }
         #region Web Form 設計工具產生的程式碼
         override protected void OnInit(EventArgs e)
         {
@@ -119,9 +136,9 @@ namespace AuthoringTool.CommonQuestionEdit
             }
 
             //When generating a new 選擇題含關鍵字 (if the Opener is Paper_QuestionTypeNew), set Previous page  as Paper_QuestionTypeNew
-            if (Request.QueryString["Opener"].ToString() == "Paper_QuestionTypeNew")
+            if (Request.QueryString["Opener"]!=null)
             {
-
+                if (Request.QueryString["Opener"].ToString() == "Paper_QuestionTypeNew")
 
                 hiddenOpener.Value = Request.QueryString["Opener"].ToString();
                 ////use JS alert() in C#
@@ -911,7 +928,10 @@ namespace AuthoringTool.CommonQuestionEdit
                     this.qAccessor.QuestionIndex_INSERT(strNewQID, strQuestion);
                     //儲存一筆資料至QuestionMode
                     SQLString mySQL = new SQLString();
-                    mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "1");
+                    //mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "1");
+
+                    // 2017 11 3 Ben 另存新題
+                    mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "2");
                 }
                 if (Request.Form.Keys[i].ToString().IndexOf("editLevelDdl@" + strQID) != -1)
                 {
@@ -971,7 +991,11 @@ namespace AuthoringTool.CommonQuestionEdit
                 SQLString mySQL = new SQLString();
                 //取得考卷題數
                 string strSeq = Convert.ToString(myReceiver.getPaperContentMaxSeq(strPaperID) + 1);
-                mySQL.SaveToQuestionContent(strPaperID, strNewQID, "0", "1", "General", strSeq);
+
+                //2017 11 3 Ben 另存新題
+                //mySQL.SaveToQuestionContent(strPaperID, strNewQID, "0", "1", "General", strSeq);
+
+                mySQL.SaveToQuestionContent(strPaperID, strNewQID, "0", "2", "General", strSeq);
             }
             FinishSave();
         }
