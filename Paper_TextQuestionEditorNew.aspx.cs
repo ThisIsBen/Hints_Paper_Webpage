@@ -857,11 +857,15 @@ namespace PaperSystem
 
         protected void btSaveNew_Click(object sender, EventArgs e)
         {
-            //建立QID
+            //建立new QID
             DataReceiver myReceiver = new DataReceiver();
             strQID = strUserID + "_Q_" + myReceiver.getNowTime();
             System.Threading.Thread.Sleep(1000);
             strAID = strUserID + "_A_" + myReceiver.getNowTime();
+            
+            //get current(the parent of the new question) QID from URL. Ben
+            string templateQuestionQID = Request.QueryString["QID"];
+
 
             //儲存題目
             clsTextQuestion myText = new clsTextQuestion();
@@ -872,7 +876,7 @@ namespace PaperSystem
             strATextContent = strATextContent.Replace("&lt;", "<");
             strATextContent = strATextContent.Replace("&gt;", ">");
 
-            myText.saveQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value);
+            myText.saveQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value, templateQuestionQID);
 
             //儲存問題難易度
             int iQuestionLevel = AuthoringTool.QuestionEditLevel.QuestionLevel.QuestionLevelName_SELECT_QuestionLevel(ddlQuestionLevel.SelectedValue);
