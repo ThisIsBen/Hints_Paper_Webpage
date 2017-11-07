@@ -456,7 +456,7 @@ namespace PaperSystem
             strTextQContent = strTextQContent.Replace("&gt;", ">");
             strTextAContent = strTextAContent.Replace("&lt;", "<");
             strTextAContent = strTextAContent.Replace("&gt;", ">");
-            myText.saveQuestionAnswer(strQID, strAID, strTextQContent, strTextAContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value);
+            myText.saveQuestionAnswer(strQID, strAID, strTextQContent, strTextAContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value,null);
 
             //儲存問題難易度
             int iQuestionLevel = AuthoringTool.QuestionEditLevel.QuestionLevel.QuestionLevelName_SELECT_QuestionLevel(ddlQuestionLevel.SelectedValue);
@@ -507,7 +507,7 @@ namespace PaperSystem
             strQTextContent = strQTextContent.Replace("&gt;", ">");
             strATextContent = strATextContent.Replace("&lt;", "<");
             strATextContent = strATextContent.Replace("&gt;", ">");
-
+            /*
             ////use JS alert() in C#
             ScriptManager.RegisterStartupScript(
              this,
@@ -516,10 +516,10 @@ namespace PaperSystem
              "<script>alert('aa: " + strATextContent + "');</script>",
              false);
             ///////
-
+            */
             
             //store the question description and correct answer to the question to DB.
-            myText.saveQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value);
+            myText.saveQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value,null);
 
             //儲存問題難易度
             int iQuestionLevel = AuthoringTool.QuestionEditLevel.QuestionLevel.QuestionLevelName_SELECT_QuestionLevel(ddlQuestionLevel.SelectedValue);

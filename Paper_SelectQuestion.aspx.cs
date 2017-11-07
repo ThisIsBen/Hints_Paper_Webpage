@@ -69,6 +69,9 @@ namespace PaperSystem
             btnSubmit.ServerClick += new ImageClickEventHandler(btnSubmit_ServerClick);
         }
 
+
+
+
         private void setupQuestionTable()
         {
             Table table = new Table();
@@ -110,6 +113,8 @@ namespace PaperSystem
             "<script>alert('SessionQuestionType: " + SessionQuestionType + "');</script>",
              false);
 
+            //Ben test 
+            //SessionQuestionType = "2";
 
             #region 列出選擇題
             if (SessionQuestionType == "" || SessionQuestionType == "1")
@@ -529,6 +534,8 @@ namespace PaperSystem
             #endregion
 
             #region 列出問答題
+               
+           
             else if (SessionQuestionType == "" || SessionQuestionType == "2")
             {
 
@@ -556,9 +563,18 @@ namespace PaperSystem
                     {
                         //取得此問題的QID
                         string strQID = "";
+
+                        //Ben 取得此問題的cQuestionType
+                        string cQuestionType="";
+                        //Ben
+
                         try
                         {
                             strQID = dsTextList.Tables[0].Rows[i]["cQID"].ToString();
+                            
+                            //Ben 取得此問題的cQuestionType
+                            cQuestionType=dsTextList.Tables[0].Rows[i]["cQuestionType"].ToString();
+                            //Ben
                         }
                         catch
                         {
@@ -574,12 +590,23 @@ namespace PaperSystem
                         if (bAllowSelect == true)
                         {
                             CheckBox chText = new CheckBox();
+
+                            
+
                             tcCheck.Controls.Add(chText);
                             string strID = "";
                             strID = "ch-" + strQID;
                             chText.ID = strID;
+                            
                             //如果此問題己經存在於Paper_Content，則CheckBox被勾選。
                             chText.Checked = myReceiver.checkExistPaperContent(strPaperID, strQID);
+
+
+                            //Ben add checkedChange event to each 問答題checkbox
+                            chText.AutoPostBack = true;
+                            chText.CheckedChanged += new EventHandler(testchbox_CheckedChanged);
+                            //Ben
+                            
                         }
 
                         //Question number
@@ -620,15 +647,210 @@ namespace PaperSystem
                 dsTextList.Dispose();
             }
             #endregion
+
+            #region 列出圖形題
             else if (SessionQuestionType == "3")
             {
                 this.setupSimulatorQuestionTable();
             }
+            #endregion
+
+            #region 列出情境題
             else if (SessionQuestionType == "5")
             {
                 this.setupSituationQuestionTable();
             }
+            #endregion
         }
+
+
+
+
+
+
+
+        //Ben add checkedChange event to each 問答題checkbox
+        protected void testchbox_CheckedChanged(object sender, EventArgs e)
+        {
+           
+
+            //CheckBox chk = (CheckBox)sender;
+            CheckBox chk = sender as CheckBox;
+            if (chk.Checked)
+            {  
+                //get 問答題similar question
+                if (SessionQuestionType == "2")
+                {
+                    //Ben check trim result of the chk ID to get cQID to get its similarID
+                    string chkID="";
+                   
+                    int index = chk.ID.IndexOf("-");
+                    if (index > 0)
+                        chkID = chk.ID.Substring(index+1);
+                    testID.InnerText = chkID;
+                    //Ben end check
+
+
+
+                    //get 問答題similar question
+                    //setupQuesAnsSimilarQuestionList(chk.ID);
+                   
+                }
+
+                //get 選擇題similar question
+                if (SessionQuestionType == "1")
+                {
+
+                    //get  選擇題similar question
+
+                }
+                
+                //show similarQuestionList modal
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            }
+
+            //else
+            //do nothing
+
+        }
+        //Ben
+        private void setupQuesAnsSimilarQuestionList(string chkID)
+        {
+            Table table = new Table();
+            similarTable.Controls.Add(table);
+            table.CellSpacing = 0;
+            table.CellPadding = 2;
+            table.BorderStyle = BorderStyle.Solid;
+            table.BorderWidth = Unit.Pixel(1);
+            table.BorderColor = System.Drawing.Color.Black;
+            table.GridLines = GridLines.None;
+            table.Width = Unit.Percentage(100);
+
+            //remove the the needless title from chk's ID to get the QID
+            string QID = "";
+
+            int index = chkID.IndexOf("-");
+            if (index > 0)
+                QID = chkID.Substring(index + 1);
+           
+           
+
+
+
+
+             #region 列出問答題
+
+
+
+
+
+                string strSQL = "";
+
+                //建立屬於此組別的問答題
+                if (Request.QueryString["SearchMode"] == "Group")
+                {
+                    strSQL = mySQL.getGroupTextQuestion(strGroupID);
+                }
+                else
+                {
+                    strSQL = mySQL.getFeatureTextQuestion((DataTable)Session["dtSelectedFeatureItemResult"]);
+                    // (DataTable)Session["dtSelectedFeatureItemResult"]
+                }
+
+                DataSet dsTextList = sqldb.getDataSet(strSQL);
+
+                int intTextCount = 0;
+                if (dsTextList.Tables[0].Rows.Count > 0)
+                {
+                    for (int i = 0; i < dsTextList.Tables[0].Rows.Count; i++)
+                    {
+                        //取得此問題的QID
+                        string strQID = "";
+
+                        //Ben 取得此問題的cQuestionType
+                        string cQuestionType="";
+                        //Ben
+
+                        try
+                        {
+                            strQID = dsTextList.Tables[0].Rows[i]["cQID"].ToString();
+                            
+                            //Ben 取得此問題的cQuestionType
+                            cQuestionType=dsTextList.Tables[0].Rows[i]["cQuestionType"].ToString();
+                            //Ben
+                        }
+                        catch
+                        {
+                        }
+
+                        TableRow trQuestion = new TableRow();
+                        table.Rows.Add(trQuestion);
+
+                        //CheckBox
+                        TableCell tcCheck = new TableCell();
+                        trQuestion.Cells.Add(tcCheck);
+
+                        if (bAllowSelect == true)
+                        {
+                            CheckBox chText = new CheckBox();
+
+                            
+
+                            tcCheck.Controls.Add(chText);
+                            string strID = "";
+                            strID = "ch-" + strQID;
+                            chText.ID = strID;
+                            //如果此問題己經存在於Paper_Content，則CheckBox被勾選。
+                            chText.Checked = myReceiver.checkExistPaperContent(strPaperID, strQID);
+
+
+                            //Ben add checkedChange event to each 問答題checkbox
+                            chText.AutoPostBack = true;
+                            chText.CheckedChanged += new EventHandler(testchbox_CheckedChanged);
+                            //Ben
+                            
+                        }
+
+                        //Question number
+                        intQuestionIndex += 1;
+                        TableCell tcTextNum = new TableCell();
+                        trQuestion.Cells.Add(tcTextNum);
+                        tcTextNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+
+                        //Question
+                        TableCell tcQuestion = new TableCell();
+                        trQuestion.Cells.Add(tcQuestion);
+                        string strQuestion = "";
+                        try
+                        {
+                            strQuestion = dsTextList.Tables[0].Rows[i]["cQuestion"].ToString();
+                        }
+                        catch
+                        {
+                        }
+                        tcQuestion.Text = strQuestion;
+
+                        //加入CSS
+                        intTextCount += 1;
+                        if ((intTextCount % 2) != 0)
+                        {
+                            trQuestion.Attributes.Add("Class", "header1_table_first_row");
+                        }
+                        else
+                        {
+                            trQuestion.Attributes.Add("Class", "header1_tr_even_row");
+                        }
+                    }
+                }
+                else
+                {
+                    //此問卷沒有問答題的情形
+                }
+                dsTextList.Dispose();
+            
+            #endregion
+        }
+
 
         private void getParameter()
         {

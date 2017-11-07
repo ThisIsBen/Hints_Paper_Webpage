@@ -931,7 +931,7 @@ namespace AuthoringTool.CommonQuestionEdit
                     //mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "1");
 
                     // 2017 11 3 Ben 另存新題
-                    mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "2");
+                    mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "2",null,null);
                 }
                 if (Request.Form.Keys[i].ToString().IndexOf("editLevelDdl@" + strQID) != -1)
                 {

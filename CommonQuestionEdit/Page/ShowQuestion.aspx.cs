@@ -24,6 +24,7 @@ using Ajax;
 using AuthoringTool.CommonQuestionEdit;
 using AuthoringTool.CaseEditor.DiagnosisAndQuestion;
 using Hints.DB;
+using System.IO;
 
 namespace AuthoringTool.CommonQuestionEdit
 {
@@ -817,6 +818,8 @@ namespace AuthoringTool.CommonQuestionEdit
 	
 		private void finishBtn_Click(object sender, ImageClickEventArgs e)
 		{
+            //2017 11 06 Ben test strAddNewQID
+            //strAddNewQID = Request.QueryString["QID"];
 
             //朱君 2012/11/25 將使用者所選擇的特徵值存入暫存陣列中，並儲存於資料庫中。
             clsFeaturevalue clsSaveFeature = new clsFeaturevalue();
@@ -878,6 +881,12 @@ namespace AuthoringTool.CommonQuestionEdit
             //若從編輯考卷來，直接將問題新增至考卷裡
             if (Session["IsFromClassExercise"] != null && Session["IsFromClassExercise"].ToString().Equals("True"))
             {
+                /*write SQL to file to 
+                //to inspect the SQL cmd when something went wrong with SQL cmd 
+                // Create a file to write to.              
+                //File.WriteAllText("D:/Hints_on_60/Hints/App_Code/AuthoringTool/CaseEditor/Paper/updateSimilarIDSQL.txt", "I am krew.");
+                */
+                 
                 DataReceiver myReceiver = new DataReceiver();
                 SQLString mySQL = new SQLString();
                 //取得考卷題數
@@ -956,6 +965,10 @@ namespace AuthoringTool.CommonQuestionEdit
             string strSID = "";
             string strRID = "";
             string strCID = "";
+
+            //get current(the parent of the new question) QID from URL. Ben
+            string templateQuestionQID = Request.QueryString["QID"];
+
             for (int i = 0; i < Request.Form.Count; i++)
             {
                 if (Request.Form.Keys[i].ToString().IndexOf("QuestionTextBox@" + strQID) != -1)
@@ -964,7 +977,10 @@ namespace AuthoringTool.CommonQuestionEdit
                     this.qAccessor.QuestionIndex_INSERT(strNewQID, strQuestion);
                     //儲存一筆資料至QuestionMode
                     SQLString mySQL = new SQLString();
-                    mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "1");
+
+                    //Ben add similarID 
+                    //mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "1");
+                    mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "1", templateQuestionQID, this.UserID);
                 }
                 if (Request.Form.Keys[i].ToString().IndexOf("editLevelDdl@" + strQID) != -1)
                 {

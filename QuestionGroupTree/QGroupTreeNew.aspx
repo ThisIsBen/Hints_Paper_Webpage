@@ -359,7 +359,7 @@
                                         <div class="modal-header text-left">
                                             <h3 class="modal-title">Use Feature Search to Search desired questions,<br />
                                                 or<br />
-                                                Display all the questions in the <b id="selectedProblemDatabase"></b>problem database</h3>
+                                                Display all the questions in the <b id="selectedProblemDatabase"></b> problem database</h3>
                                         </div>
 
 
