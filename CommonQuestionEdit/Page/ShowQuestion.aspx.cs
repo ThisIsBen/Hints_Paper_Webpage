@@ -170,6 +170,7 @@ namespace AuthoringTool.CommonQuestionEdit
                     */
                 }
 
+                //If it's opened for modification in the state that this question is added in an exam paper 
                 if (Request.QueryString["Opener"].ToString() == "Paper_MainPage")
                 {
                     hiddenOpener.Value = Session["PreviousPageURL"].ToString();

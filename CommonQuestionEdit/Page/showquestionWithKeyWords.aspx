@@ -210,12 +210,29 @@
                 }
 
                 else
-                    strOpener = BackUrl;
+                {
+
+                   
+
+                   
+                    //編輯題目
+                    if(strBModify == "True")
+                    {
+                        //修改題目
+                        //location.href = "../../Paper_QuestionView.aspx";	
+                        var varGroupID = document.getElementById("hiddenGroupID").value;
+                        strOpener = "../../Paper_QuestionViewNew.aspx?GroupID="+varGroupID;
+                    }
+
+
+                    else
+                        strOpener = BackUrl;
+                }
 
 
               
-                    
-                window.location.href=strOpener;
+               // alert(BackUrl);
+               location.href=strOpener;
             }
 				
             else if(strModifyType == "Paper")

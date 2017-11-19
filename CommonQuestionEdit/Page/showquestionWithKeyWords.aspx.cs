@@ -149,6 +149,12 @@ namespace AuthoringTool.CommonQuestionEdit
                 // "<script>alert('" + hiddenOpener.Value + "');</script>",
                 // false);
                 ///////
+
+                //If it's opened for modification in the state that this question is added in an exam paper 
+                if (Request.QueryString["Opener"].ToString() == "Paper_MainPage")
+                {
+                    hiddenOpener.Value = Session["PreviousPageURL"].ToString();
+                }
             }
 
 
@@ -418,6 +424,9 @@ namespace AuthoringTool.CommonQuestionEdit
         /// <summary>
         /// 開始至資料庫讀取問題以及問題的選項,並將問題按照父子關係呈現至HTML的Table中,以呈現至前端
         /// </summary>
+        
+        string KeyWordsText = "";//to store the content of 關鍵字
+
         private void ProcessData()
         {
             recordDisplayItemID.Value = this.Request.Form["recordDisplayItemID"];
@@ -440,7 +449,7 @@ namespace AuthoringTool.CommonQuestionEdit
             //			string LevelAndRank = "";
             //下面回圈所處理問題ID
             string QuestionText = "";
-            string KeyWordsText = "";
+            
             if (this.Question_Edit_Type == "Group_Question" || this.Question_Edit_Type == "Choice_Question")
             {
                 if (Session["totalQuestionNum"] == null)
@@ -920,18 +929,32 @@ namespace AuthoringTool.CommonQuestionEdit
             string strSID = "";
             string strRID = "";
             string strCID = "";
+
+
+            //get current(the parent of the new question) QID from URL. Ben
+            string templateQuestionQID = Request.QueryString["QID"];
+
             for (int i = 0; i < Request.Form.Count; i++)
             {
                 if (Request.Form.Keys[i].ToString().IndexOf("QuestionTextBox@" + strQID) != -1)
                 {
                     strQuestion = Request.Form[i].ToString();
-                    this.qAccessor.QuestionIndex_INSERT(strNewQID, strQuestion);
+
+                    //Ben insert Keywords of 關鍵字選擇題 to QuestionIndex
+                    //this.qAccessor.QuestionIndex_INSERT(strNewQID, strQuestion);
+                    this.qAccessor.QuestionIndex_INSERT_ForKeywordsSelection(strNewQID, strQuestion, KeyWordsText);
+                    
                     //儲存一筆資料至QuestionMode
                     SQLString mySQL = new SQLString();
                     //mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "1");
 
+                    /*
                     // 2017 11 3 Ben 另存新題
                     mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "2",null,null);
+                    */
+                    //Ben add similarID 
+                    //mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "1");
+                    mySQL.saveIntoQuestionMode(strNewQID, "", "", strGroupID, "General", "6", templateQuestionQID, this.UserID);
                 }
                 if (Request.Form.Keys[i].ToString().IndexOf("editLevelDdl@" + strQID) != -1)
                 {
@@ -995,7 +1018,7 @@ namespace AuthoringTool.CommonQuestionEdit
                 //2017 11 3 Ben 另存新題
                 //mySQL.SaveToQuestionContent(strPaperID, strNewQID, "0", "1", "General", strSeq);
 
-                mySQL.SaveToQuestionContent(strPaperID, strNewQID, "0", "2", "General", strSeq);
+                mySQL.SaveToQuestionContent(strPaperID, strNewQID, "0", "6", "General", strSeq);
             }
             FinishSave();
         }

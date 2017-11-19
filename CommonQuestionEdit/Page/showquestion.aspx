@@ -312,13 +312,31 @@
 				    else
 				    {
 				       
-				        strOpener = BackUrl;
+				        
+
+
+
+				       
+				        //編輯題目
+				        if(strBModify == "True")
+				        {
+				            //修改題目
+				            //location.href = "../../Paper_QuestionView.aspx";	
+				            var varGroupID = document.getElementById("hiddenGroupID").value;
+				            strOpener = "../../Paper_QuestionViewNew.aspx?GroupID="+varGroupID;
+				        }
+
+				        else
+				            strOpener = BackUrl;
+				        
 				    }
 				       
-				   
-                    
+				    //alert(BackUrl);
+				    
 				    location.href=strOpener;
                     
+
+				    
 				}
 				
 				else if(strModifyType == "Paper")
@@ -361,6 +379,7 @@
 				}
 				else
 				{
+				   
 					var varGroupID = document.getElementById("hiddenGroupID").value;
 					//編輯題目
 					if(strBModify == "True")
@@ -378,6 +397,8 @@
 						location.href = "../../Paper_QuestionViewNew.aspx?GroupID="+varGroupID;
 					}
 				}
+
+				
 			}
 			/*The following code,which is used to deal with the 'Next' button click is moved to <head>
 			function delaySaveQuestion()
