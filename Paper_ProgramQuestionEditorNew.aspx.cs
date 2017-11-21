@@ -435,7 +435,7 @@ namespace PaperSystem
             string strTextOutputFormatContent = txtOutputFormatExData.Text;//get output format from textarea
 
             //replace some certain chars in the content retrieved from the above four textareas.
-            strTextQContent = strTextQContent.Replace("&lt;", "<");
+           strTextQContent = strTextQContent.Replace("&lt;", "<");
             strTextQContent = strTextQContent.Replace("&gt;", ">");
             strTextAContent = strTextAContent.Replace("&lt;", "<");
             strTextAContent = strTextAContent.Replace("&gt;", ">");
@@ -447,7 +447,7 @@ namespace PaperSystem
             
 
 
-            myText.saveQuestionAnswer(strQID, strAID, strTextQContent, strTextAContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value);
+            myText.saveProgramQuestionAnswer(strQID, strAID, strTextQContent, strTextAContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value,strTextTestDataContent, strTextOutputFormatContent);
 
             //儲存問題難易度
             int iQuestionLevel = AuthoringTool.QuestionEditLevel.QuestionLevel.QuestionLevelName_SELECT_QuestionLevel(ddlQuestionLevel.SelectedValue);
@@ -876,12 +876,22 @@ namespace PaperSystem
             clsProgramQuestion myText = new clsProgramQuestion();
             string strQTextContent = txtQuestionData.Text;
             string strATextContent = txtAnswerData.Text;
+            string strTextTestDataContent = txtTestData.Text;//get test data from textarea
+            string strTextOutputFormatContent = txtOutputFormatExData.Text;//get output format from textarea
+
+
+
+
             strQTextContent = strQTextContent.Replace("&lt;", "<");
             strQTextContent = strQTextContent.Replace("&gt;", ">");
             strATextContent = strATextContent.Replace("&lt;", "<");
             strATextContent = strATextContent.Replace("&gt;", ">");
+            strTextTestDataContent = strTextTestDataContent.Replace("&lt;", "<");
+            strTextTestDataContent = strTextTestDataContent.Replace("&gt;", ">");
+            strTextOutputFormatContent = strTextOutputFormatContent.Replace("&lt;", "<");
+            strTextTestDataContent = strTextOutputFormatContent.Replace("&gt;", ">");
 
-            myText.saveQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value);
+            myText.saveProgramQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value, strTextTestDataContent, strTextOutputFormatContent);
 
             //儲存問題難易度
             int iQuestionLevel = AuthoringTool.QuestionEditLevel.QuestionLevel.QuestionLevelName_SELECT_QuestionLevel(ddlQuestionLevel.SelectedValue);

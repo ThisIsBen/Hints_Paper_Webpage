@@ -139,10 +139,10 @@
         </tr>
         <tr>
             <td>
-                <asp:TextBox ID="txtQuestionData" Style="display: none" runat="server"></asp:TextBox>
-                <asp:TextBox ID="txtAnswerData" Style="display: none" runat="server"></asp:TextBox>
-                <asp:TextBox ID="txtTestData" Style="display: none" runat="server"></asp:TextBox>
-                <asp:TextBox ID="txtOutputFormatExData" Style="display: none" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtQuestionData" Style="display: none" runat="server" TextMode="MultiLine"></asp:TextBox>
+                <asp:TextBox ID="txtAnswerData" Style="display: none" runat="server" TextMode="MultiLine"></asp:TextBox>
+                <asp:TextBox ID="txtTestData" Style="display: none" runat="server" TextMode="MultiLine"></asp:TextBox>
+                <asp:TextBox ID="txtOutputFormatExData" Style="display: none" runat="server" TextMode="MultiLine"></asp:TextBox>
                
 
                 <div style="position: absolute; top: 600px">
@@ -213,7 +213,14 @@
         </tr>
         <tr>
             <td>
-                <div align="right">
+                <h3>segmentsCut:aeiouSeparateAEIOU</h3>
+                    <h5>used to split the different segments</h5>
+                    <h5>for example:</h5>
+                    <p>first testing data.....</p>
+                    <p>aeiouSeparateAEIOU</p>
+                    <p>second testing data....</p>
+                <div align="right">                  
+
                     <textarea style="width: 100%; height: 200px" name="txtTestDataEdit" id="txtTestDataEdit"></textarea>
                     
                 </div>
