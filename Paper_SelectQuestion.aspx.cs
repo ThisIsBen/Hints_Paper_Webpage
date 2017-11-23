@@ -564,17 +564,20 @@ namespace PaperSystem
                         //取得此問題的QID
                         string strQID = "";
 
+                        /*
                         //Ben 取得此問題的cQuestionType
                         string cQuestionType="";
                         //Ben
+                        */
 
                         try
                         {
                             strQID = dsTextList.Tables[0].Rows[i]["cQID"].ToString();
-                            
+                            /*
                             //Ben 取得此問題的cQuestionType
                             cQuestionType=dsTextList.Tables[0].Rows[i]["cQuestionType"].ToString();
                             //Ben
+                            */
                         }
                         catch
                         {
@@ -601,11 +604,12 @@ namespace PaperSystem
                             //如果此問題己經存在於Paper_Content，則CheckBox被勾選。
                             chText.Checked = myReceiver.checkExistPaperContent(strPaperID, strQID);
 
-
+                            /*
                             //Ben add checkedChange event to each 問答題checkbox
                             chText.AutoPostBack = true;
                             chText.CheckedChanged += new EventHandler(testchbox_CheckedChanged);
                             //Ben
+                            */
                             
                         }
 
@@ -659,6 +663,134 @@ namespace PaperSystem
             else if (SessionQuestionType == "5")
             {
                 this.setupSituationQuestionTable();
+            }
+            #endregion
+
+
+
+            #region 列出程式題
+
+
+            else if (SessionQuestionType == "" || SessionQuestionType == "7")
+            {
+
+
+
+                clsProgramQuestion clsProgramQuestionObj = new clsProgramQuestion();
+
+                //建立屬於此組別的問答題
+                if (Request.QueryString["SearchMode"] == "Group")
+                {
+                    strSQL = clsProgramQuestionObj.getAllProgramTypeQuestion(strGroupID);
+                }
+                else
+                {
+                    strSQL = clsProgramQuestionObj.getFeatureProgramQuestion((DataTable)Session["dtSelectedFeatureItemResult"]);
+                    // (DataTable)Session["dtSelectedFeatureItemResult"]
+                }
+
+                //error occurs here, because QuestionMode is in NewVersionHintsDB, while Program_Question is in CorrectStuHWDB
+                //maybe we can move Program_Question and Program_Answer table to NewVersionHintsDB
+                SqlDB myDB = new SqlDB(System.Configuration.ConfigurationSettings.AppSettings["connstr"]);
+                //error occurs here, because QuestionMode is in NewVersionHintsDB, while Program_Question is in CorrectStuHWDB
+                //maybe we can move Program_Question and Program_Answer table to NewVersionHintsDB
+
+                DataSet dsProgramList = myDB.getDataSet(strSQL);
+               
+                int intTextCount = 0;
+                if (dsProgramList.Tables[0].Rows.Count > 0)
+                {
+                    for (int i = 0; i < dsProgramList.Tables[0].Rows.Count; i++)
+                    {
+                        //取得此問題的QID
+                        string strQID = "";
+
+                        /*
+                        //Ben 取得此問題的cQuestionType
+                        string cQuestionType = "";
+                        //Ben
+                        */
+
+                        try
+                        {
+                            strQID = dsProgramList.Tables[0].Rows[i]["cQID"].ToString();
+
+                            /*
+                            //Ben 取得此問題的cQuestionType
+                            cQuestionType = dsTextList.Tables[0].Rows[i]["cQuestionType"].ToString();
+                            //Ben
+                            */
+                        }
+                        catch
+                        {
+                        }
+
+                        TableRow trQuestion = new TableRow();
+                        table.Rows.Add(trQuestion);
+
+                        //CheckBox
+                        TableCell tcCheck = new TableCell();
+                        trQuestion.Cells.Add(tcCheck);
+
+                        if (bAllowSelect == true)
+                        {
+                            CheckBox chText = new CheckBox();
+
+
+
+                            tcCheck.Controls.Add(chText);
+                            string strID = "";
+                            strID = "ch-" + strQID;
+                            chText.ID = strID;
+
+                            //如果此問題己經存在於Paper_Content，則CheckBox被勾選。
+                            chText.Checked = myReceiver.checkExistPaperContent(strPaperID, strQID);
+
+                            /*show the similar questions when a question is picked.
+                            //Ben add checkedChange event to each 問答題checkbox
+                            chText.AutoPostBack = true;
+                            chText.CheckedChanged += new EventHandler(testchbox_CheckedChanged);
+                            //Ben
+                            */
+
+                        }
+
+                        //Question number
+                        intQuestionIndex += 1;
+                        TableCell tcTextNum = new TableCell();
+                        trQuestion.Cells.Add(tcTextNum);
+                        tcTextNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+
+                        //Question
+                        TableCell tcQuestion = new TableCell();
+                        trQuestion.Cells.Add(tcQuestion);
+                        string strQuestion = "";
+                        try
+                        {
+                            strQuestion = dsProgramList.Tables[0].Rows[i]["cQuestion"].ToString();
+                        }
+                        catch
+                        {
+                        }
+                        tcQuestion.Text = strQuestion;
+
+                        //加入CSS
+                        intTextCount += 1;
+                        if ((intTextCount % 2) != 0)
+                        {
+                            trQuestion.Attributes.Add("Class", "header1_table_first_row");
+                        }
+                        else
+                        {
+                            trQuestion.Attributes.Add("Class", "header1_tr_even_row");
+                        }
+                    }
+                }
+                else
+                {
+                    //此問卷沒有問答題的情形
+                }
+                dsProgramList.Dispose();
             }
             #endregion
         }
@@ -803,11 +935,12 @@ namespace PaperSystem
                             //如果此問題己經存在於Paper_Content，則CheckBox被勾選。
                             chText.Checked = myReceiver.checkExistPaperContent(strPaperID, strQID);
 
-
+                             /* show similar question when a question is picked
                             //Ben add checkedChange event to each 問答題checkbox
                             chText.AutoPostBack = true;
                             chText.CheckedChanged += new EventHandler(testchbox_CheckedChanged);
                             //Ben
+                            */
                             
                         }
 
