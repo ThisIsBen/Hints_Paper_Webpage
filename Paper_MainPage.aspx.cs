@@ -564,7 +564,8 @@ namespace PaperSystem
                         TableCell tcQuestionNum = new TableCell();
                         trQuestion.Cells.Add(tcQuestionNum);
                         tcQuestionNum.Width = Unit.Pixel(25);
-                        tcQuestionNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+                        tcQuestionNum.Text = "Q" + intQuestionIndex.ToString() + ":<br/>    "+"選擇題: " ;
+                        tcQuestionNum.Attributes["style"] = "color: Black";
 
                         //問題的內容
                         string strQuestion = "";
@@ -577,7 +578,7 @@ namespace PaperSystem
                         }
                         TableCell tcQuestion = new TableCell();
                         trQuestion.Cells.Add(tcQuestion);
-                        tcQuestion.Text = "選擇題: " + strQuestion;
+                        tcQuestion.Text =  strQuestion;
                         tcQuestion.Width = Unit.Percentage(100);
 
                         /*
@@ -866,7 +867,9 @@ namespace PaperSystem
                         TableCell tcQuestionNum = new TableCell();
                         trQuestion.Cells.Add(tcQuestionNum);
                         tcQuestionNum.Width = Unit.Pixel(25);
-                        tcQuestionNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+                        tcQuestionNum.Text = "Q" + intQuestionIndex.ToString() +":<br/>    "+"選擇題包含關鍵字: " ;
+                        tcQuestionNum.Attributes["style"] = "color: Black";
+
 
                         //問題的內容
                         string strQuestion = "";
@@ -880,7 +883,7 @@ namespace PaperSystem
 
                         TableCell tcQuestion = new TableCell();
                         trQuestion.Cells.Add(tcQuestion);
-                        tcQuestion.Text = "選擇題含關鍵字: " + strQuestion;
+                        tcQuestion.Text = strQuestion;
                         tcQuestion.Width = Unit.Percentage(75);
 
                         //關鍵字標題
@@ -1140,7 +1143,8 @@ namespace PaperSystem
                     TableCell tcTextNum = new TableCell();
                     trQuestion.Cells.Add(tcTextNum);
                     tcTextNum.Width = Unit.Pixel(25);
-                    tcTextNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+                    tcTextNum.Text = "Q" + intQuestionIndex.ToString() + ":<br/>    " + "問答題: ";
+                    tcTextNum.Attributes["style"] = "color: Black";
 
                     TableCell tcTextNumAnswer = new TableCell();
                     trAnswer.Cells.Add(tcTextNumAnswer);
@@ -1150,7 +1154,7 @@ namespace PaperSystem
                     //Question
                     TableCell tcQuestion = new TableCell();
                     trQuestion.Cells.Add(tcQuestion);
-                    tcQuestion.Text = "問答題: "+strQuestion;
+                    tcQuestion.Text = strQuestion;
 
                     //Answer
                     TableCell tcAnswer = new TableCell();
@@ -1302,7 +1306,8 @@ namespace PaperSystem
                     TableCell tcSituationNum = new TableCell();
                     trSituationQuestion.Cells.Add(tcSituationNum);
                     tcSituationNum.Width = Unit.Pixel(200);
-                    tcSituationNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+                    tcSituationNum.Text = "Q" + intQuestionIndex.ToString() + ":<br/>    " + "情境題: ";
+                    tcSituationNum.Attributes["style"] = "color: Black";
 
                     TableCell tcSituationNumInformation = new TableCell();
                     trSituationInformation.Cells.Add(tcSituationNumInformation);
@@ -1312,7 +1317,7 @@ namespace PaperSystem
                     //Question
                     TableCell tcQuestion = new TableCell();
                     trSituationQuestion.Cells.Add(tcQuestion);
-                    tcQuestion.Text ="情境題: " + strQuestion;
+                    tcQuestion.Text =strQuestion;
 
                     //Answer
                     TableCell tcAnswer = new TableCell();
@@ -1459,15 +1464,15 @@ namespace PaperSystem
                         trQuestion.Cells.Add(tcQuestionNum);
                         tcQuestionNum.Width = Unit.Pixel(150);
                         //tcQuestionNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
-                        tcQuestionNum.Text = "<IMG id='img_" + strQID + "' src='../../../BasicForm/Image/minus.gif'>&nbsp;Q" + intQuestionIndex.ToString() + " : ";
-
+                        tcQuestionNum.Text = "<IMG id='img_" + strQID + "' src='../../../BasicForm/Image/minus.gif'>&nbsp;Q" + intQuestionIndex.ToString() + ":<br/>    " + "圖形題: ";
+                        tcQuestionNum.Attributes["style"] = "color: Black";
                         //問題的內容
                         string strQuestion = "";
                         strQuestion = dsQuestion.Tables[0].Rows[0]["cQuestion"].ToString();
 
                         TableCell tcQuestion = new TableCell();
                         trQuestion.Cells.Add(tcQuestion);
-                        tcQuestion.Text = "圖形題: " + strQuestion;
+                        tcQuestion.Text =strQuestion;
 
                         //建立問題的CSS
                         trQuestion.Attributes.Add("Class", "header1_table_first_row");
@@ -1656,7 +1661,9 @@ namespace PaperSystem
                     TableCell tcTextNum = new TableCell();
                     trQuestion.Cells.Add(tcTextNum);
                     tcTextNum.Width = Unit.Pixel(25);
-                    tcTextNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+                    tcTextNum.Text = "Q" + intQuestionIndex.ToString() + ":<br/>    " + "程式題: ";
+
+                    tcTextNum.Attributes["style"] = "color: Black";
 
                     //we don't need to show the answer to the program question for the time being.
                     /*
@@ -1668,7 +1675,7 @@ namespace PaperSystem
                     //Question
                     TableCell tcQuestion = new TableCell();
                     trQuestion.Cells.Add(tcQuestion);
-                    tcQuestion.Text = "程式題: " + strQuestion;
+                    tcQuestion.Text = strQuestion;
 
                     //we don't need to show the answer to the program question for the time being.
                     /*
