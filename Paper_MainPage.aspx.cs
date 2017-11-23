@@ -577,7 +577,7 @@ namespace PaperSystem
                         }
                         TableCell tcQuestion = new TableCell();
                         trQuestion.Cells.Add(tcQuestion);
-                        tcQuestion.Text = strQuestion;
+                        tcQuestion.Text = "選擇題: " + strQuestion;
                         tcQuestion.Width = Unit.Percentage(100);
 
                         /*
@@ -880,7 +880,7 @@ namespace PaperSystem
 
                         TableCell tcQuestion = new TableCell();
                         trQuestion.Cells.Add(tcQuestion);
-                        tcQuestion.Text = strQuestion;
+                        tcQuestion.Text = "選擇題含關鍵字: " + strQuestion;
                         tcQuestion.Width = Unit.Percentage(75);
 
                         //關鍵字標題
@@ -1150,7 +1150,7 @@ namespace PaperSystem
                     //Question
                     TableCell tcQuestion = new TableCell();
                     trQuestion.Cells.Add(tcQuestion);
-                    tcQuestion.Text = strQuestion;
+                    tcQuestion.Text = "問答題: "+strQuestion;
 
                     //Answer
                     TableCell tcAnswer = new TableCell();
@@ -1302,7 +1302,7 @@ namespace PaperSystem
                     TableCell tcSituationNum = new TableCell();
                     trSituationQuestion.Cells.Add(tcSituationNum);
                     tcSituationNum.Width = Unit.Pixel(200);
-                    tcSituationNum.Text = "情境題 Question" + intQuestionIndex.ToString() + ": ";
+                    tcSituationNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
 
                     TableCell tcSituationNumInformation = new TableCell();
                     trSituationInformation.Cells.Add(tcSituationNumInformation);
@@ -1312,7 +1312,7 @@ namespace PaperSystem
                     //Question
                     TableCell tcQuestion = new TableCell();
                     trSituationQuestion.Cells.Add(tcQuestion);
-                    tcQuestion.Text = strQuestion;
+                    tcQuestion.Text ="情境題: " + strQuestion;
 
                     //Answer
                     TableCell tcAnswer = new TableCell();
@@ -1467,7 +1467,7 @@ namespace PaperSystem
 
                         TableCell tcQuestion = new TableCell();
                         trQuestion.Cells.Add(tcQuestion);
-                        tcQuestion.Text = strQuestion;
+                        tcQuestion.Text = "圖形題: " + strQuestion;
 
                         //建立問題的CSS
                         trQuestion.Attributes.Add("Class", "header1_table_first_row");
@@ -1613,6 +1613,181 @@ namespace PaperSystem
                     }
                 }
             }
+            #endregion
+
+
+            #region 列出程式題
+            //建立屬於此問卷的問答題
+            strSQL = mySQL.getPaperProgramQuestionQuestionContent(strPaperID);
+            DataSet dsProgramList = sqldb.getDataSet(strSQL);
+            int intProgramCount = 0;
+            if (dsProgramList.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < dsProgramList.Tables[0].Rows.Count; i++)
+                {
+                    //取得此問題的QID
+                    string strQID = "";
+                    strQID = dsProgramList.Tables[0].Rows[i]["cQID"].ToString();
+
+                    //Question
+                    string strQuestion = "";
+                    strQuestion = dsProgramList.Tables[0].Rows[i]["cQuestion"].ToString();
+
+                    //we don't need to show the answer to the program question for the time being.
+                    /*
+                    //Answer
+                    string strAnswer = "";
+                    strAnswer = dsProgramList.Tables[0].Rows[i]["cAnswer"].ToString();
+                    */
+
+                    TableRow trQuestion = new TableRow();
+                    table.Rows.Add(trQuestion);
+                    trQuestion.Attributes.Add("Class", "header1_table_first_row");
+
+                    //we don't need to show the answer to the program question for the time being.
+                    /*
+                    TableRow trAnswer = new TableRow();
+                    trAnswer.Attributes.Add("Class", "header1_tr_even_row");
+                    table.Rows.Add(trAnswer);
+                    */
+
+                    //Question number
+                    intQuestionIndex += 1;
+                    TableCell tcTextNum = new TableCell();
+                    trQuestion.Cells.Add(tcTextNum);
+                    tcTextNum.Width = Unit.Pixel(25);
+                    tcTextNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+
+                    //we don't need to show the answer to the program question for the time being.
+                    /*
+                    TableCell tcTextNumAnswer = new TableCell();
+                    trAnswer.Cells.Add(tcTextNumAnswer);
+                    tcTextNumAnswer.Width = Unit.Pixel(25);
+                    tcTextNumAnswer.Text = "A" + intQuestionIndex.ToString() + ": ";
+                    */
+                    //Question
+                    TableCell tcQuestion = new TableCell();
+                    trQuestion.Cells.Add(tcQuestion);
+                    tcQuestion.Text = "程式題: " + strQuestion;
+
+                    //we don't need to show the answer to the program question for the time being.
+                    /*
+                    //Answer
+                    TableCell tcAnswer = new TableCell();
+                    trAnswer.Cells.Add(tcAnswer);
+                    tcAnswer.Text = strAnswer;
+                     */
+
+                    //建立修改按鈕的TableRow
+                    TableRow trModify = new TableRow();
+                    table.Rows.Add(trModify);
+
+                    //新增TableCell 用來增加設定分數的TextBox
+                    TableCell tcTextArea = new TableCell();
+                    trModify.Cells.Add(tcTextArea);
+                    tcTextArea.HorizontalAlign = HorizontalAlign.Left;
+                    tcTextArea.VerticalAlign = VerticalAlign.Top;
+
+                    TableCell tcModify = new TableCell();
+                    trModify.Cells.Add(tcModify);
+                    tcModify.Attributes["align"] = "right";
+                    //tcModify.ColumnSpan = 2;
+
+                    //建立Question title的TextArea
+                    HtmlTextArea txtTitle = new HtmlTextArea();
+                    tcModify.Controls.Add(txtTitle);
+                    txtTitle.ID = "txtTitle" + strQID;
+                    txtTitle.Style.Add("WIDTH", "100%");
+                    txtTitle.Rows = 5;
+                    txtTitle.Style.Add("DISPLAY", "none");
+
+                    /*
+                    //取出此QuestionTitle的內容
+                    txtTitle.InnerText = myReceiver.getQuestionTitle(strPaperID, strQID);
+                    */
+
+                    //建立間隔
+                    Label lblCell0 = new Label();
+                    lblCell0.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    tcModify.Controls.Add(lblCell0);
+
+                    //建立Question title button
+                    HtmlInputButton btnTitle = new HtmlInputButton("button");
+                    //從ORCS的課堂練習頁面接收參數
+                    if (hiddenOpener.Value != "SelectPaperMode")
+                    {
+                        tcModify.Controls.Add(btnTitle);
+                    }
+                    btnTitle.ID = "btnTitle" + strQID;
+                    btnTitle.Value = "Add a question title";
+                    btnTitle.Attributes.Add("onclick", "showQuestionTitle('" + strQID + "')");
+                    btnTitle.Style["width"] = "220px";
+                    btnTitle.Attributes["class"] = "button_blue";
+
+
+                    //建立ScoreTextBox 朱君2012/12/25
+                    Label lblScore = new Label();
+                    tcTextArea.Controls.Add(lblScore);
+                    lblScore.Text = "分數：";
+                    lblScore.Style["width"] = "50px";
+
+                    //建立ScoreTextBox 朱君2012/12/25
+                    TextBox txtScore = new TextBox();
+                    txtScore.AutoPostBack = true;
+                    tcTextArea.Controls.Add(txtScore);
+                    txtScore.ID = "txtScore-" + strQID;
+                    txtScore.Text = SQLString.GetQuestionScore(strQID, strPaperID).ToString();
+                    txtScore.TextChanged += new EventHandler(txtScore_TextChange);
+                    txtScore.Style["width"] = "80px";
+                    //累加每一題目的分數
+                    intSumScore += SQLString.GetQuestionScore(strQID, strPaperID);
+
+                    //建立間隔
+                    Label lblCell1 = new Label();
+                    lblCell1.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    tcModify.Controls.Add(lblCell1);
+
+                    //建立修改問題的Button
+                    Button btnModifyText = new Button();
+                    tcModify.Controls.Add(btnModifyText);
+                    btnModifyText.Style["width"] = "220px";
+                    btnModifyText.ID = "btnModifyText-" + strQID;
+                    btnModifyText.Text = "Modify this question";
+                    btnModifyText.Click += new EventHandler(btnModifyText_Click);
+                    btnModifyText.Attributes["class"] = "button_blue";
+
+                    //建立間隔
+                    Label lblCell = new Label();
+                    tcModify.Controls.Add(lblCell);
+                    lblCell.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+                    //建立刪除問答題的Button
+                    Button btnDeleteText = new Button();
+                    tcModify.Controls.Add(btnDeleteText);
+                    btnDeleteText.Style["width"] = "220px";
+                    btnDeleteText.ID = "btnDeleteText-" + strQID;
+                    btnDeleteText.Text = "Delete this question";
+                    btnDeleteText.Click += new EventHandler(btnDeleteText_Click);
+                    btnDeleteText.Attributes["class"] = "button_blue";
+
+                    //加入CSS
+                    intProgramCount += 1;
+
+                    //if((intTextCount % 2) != 0)
+                    //{
+                    //    trQuestion.Attributes.Add("Class","header1_tr_even_row");	
+                    //}
+                    //else
+                    //{
+                    //    trQuestion.Attributes.Add("Class","header1_tr_odd_row");
+                    //}
+                }
+            }
+            else
+            {
+                //此問卷沒有問答題的情形
+            }
+            dsProgramList.Dispose();
             #endregion
             //更改考卷總分
             lblTotalScore.Text = intSumScore.ToString();

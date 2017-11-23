@@ -1687,6 +1687,112 @@ namespace PaperSystem
             }
 
             #endregion
+
+
+            #region 將所勾選的程式題儲存
+            //取得此組別的問答題
+            clsProgramQuestion clsProgramQuestionObj = new clsProgramQuestion();
+
+            //建立屬於此組別的問答題
+            if (Request.QueryString["SearchMode"] == "Group")
+            {
+                strSQL = clsProgramQuestionObj.getAllProgramTypeQuestion(strGroupID);
+            }
+            else
+            {
+                strSQL = clsProgramQuestionObj.getFeatureProgramQuestion((DataTable)Session["dtSelectedFeatureItemResult"]);
+                // (DataTable)Session["dtSelectedFeatureItemResult"]
+            }
+
+            //error occurs here, because QuestionMode is in NewVersionHintsDB, while Program_Question is in CorrectStuHWDB
+            //maybe we can move Program_Question and Program_Answer table to NewVersionHintsDB
+            SqlDB myDB = new SqlDB(System.Configuration.ConfigurationSettings.AppSettings["connstr"]);
+            //error occurs here, because QuestionMode is in NewVersionHintsDB, while Program_Question is in CorrectStuHWDB
+            //maybe we can move Program_Question and Program_Answer table to NewVersionHintsDB
+
+            DataSet dsProgramList = myDB.getDataSet(strSQL);
+
+            if (dsProgramList.Tables[0].Rows.Count > 0 && (SessionQuestionType == "" || SessionQuestionType == "7"))
+            {
+                for (int i = 0; i < dsProgramList.Tables[0].Rows.Count; i++)
+                {
+                    //取得QID
+                    string strQID = "";
+                    try
+                    {
+                        strQID = dsProgramList.Tables[0].Rows[i]["cQID"].ToString();
+                    }
+                    catch
+                    {
+                    }
+
+                    //檢查此題目是否有被勾選
+                    bool bCheck = false;
+                    try
+                    {
+                        bCheck = ((CheckBox)(this.FindControl("Form1").FindControl("ch-" + strQID))).Checked;
+                    }
+                    catch
+                    {
+                        Response.Write("<span style='DISPLAY: none'>讀取" + strQID + "的CheckBox失敗</span>");
+                    }
+
+                    if (bCheck == true)
+                    {
+                        intTextCount += 1;
+
+                        //Standard score
+                        string strScore = "0";
+
+                        //QuestionType
+                        string strQuestionType = "";
+                        try
+                        {
+                            strQuestionType = dsProgramList.Tables[0].Rows[i]["cQuestionType"].ToString();
+                        }
+                        catch
+                        {
+                        }
+
+                        //QuestionMode
+                        string strQuestionMode = "";
+                        try
+                        {
+                            strQuestionMode = dsProgramList.Tables[0].Rows[i]["cQuestionMode"].ToString();
+                        }
+                        catch
+                        {
+                        }
+
+                        //Seq
+                        string strSeq = Convert.ToString(myReceiver.getPaperContentMaxSeq(strPaperID) + 1);
+
+                        //Question
+                        string strQuestion = "";
+                        try
+                        {
+                            strQuestion = dsProgramList.Tables[0].Rows[i]["cQuestion"].ToString();
+                        }
+                        catch
+                        {
+                        }
+
+                        //將此題目的資料存入資料庫
+                        mySQL.SaveToQuestionContent(strPaperID, strQID, strScore, strQuestionType, strQuestionMode, strQuestion, strSeq);
+                    }
+                    else
+                    {
+                        //將資料自Paper_Conent刪除
+                        mySQL.DeleteFromQuestionContent(strPaperID, strQID);
+                    }
+                }
+            }
+            else
+            {
+                //此組別沒有問答題的情形
+            }
+            dsProgramList.Dispose();
+            #endregion
             #region 20110407 暫時處理模式
             //20110407 因為程式運作模式 在新增題目時 若同一群組沒有一次選完題目 問題順序會無法照順序排
             //所以當新增完題目後 重新設定排序
