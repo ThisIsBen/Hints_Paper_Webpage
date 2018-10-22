@@ -8,10 +8,12 @@
 <head id="Head1" runat="server">
 
     <title>Question Group Tree</title>
-    <link href="../../../../Backup1/Hints/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <script src="../../../../Scripts/jquery-1.11.2.min.js"></script>
     <script src="../../../../Scripts/bootstrap.min.js"></script>
 
+   
+   
     <script type="text/javascript">
 
         function openModal() {
@@ -261,12 +263,21 @@
             width: 100%;
         }
 
-        #btFeatureSearch {
-            height: 26px;
-        }
+       
 
         .hideSearchPanel {
             display: none;
+        }
+
+
+
+       input[type=radio] {
+    
+            width: 100%;
+            height: 2em;
+        }
+       .panel {
+            border: 0;
         }
     </style>
 
@@ -309,6 +320,20 @@
                         //alert(msg);
                         document.getElementById("tdParentNodeName").innerText = msg;
                         document.getElementById("tNodeName").value = msg;
+                    }
+
+
+                    function checkPanelFeatureItem_Empty() {
+
+                        var rowCountOfSelectedFeatureTable = $('#PanelFeatureItem > table tr').length;
+
+                        if (rowCountOfSelectedFeatureTable < 1) {
+
+                            alert("No feature is selected!\nPlease select at least one feature before search.");
+                            return false;
+                        }
+                       
+
                     }
                 </script>
 
@@ -355,33 +380,41 @@
                                 style="display: none;"
                                 runat="server">
                                 <div class="modal-dialog modal-lg">
+                                  
                                     <div class="modal-content">
-                                        <div class="modal-header text-left">
-                                            <h3 class="modal-title">Use Feature Search to Search desired questions,<br />
-                                                or<br />
-                                                Display all the questions in the <b id="selectedProblemDatabase"></b> problem database</h3>
-                                        </div>
+                                        <div class="panel panel-success">
+                                       <%-- <div class="modal-header text-left">--%>
+                                           
+                                        <div class="panel-heading"><h3 class="modal-title">Use Feature Search to Search desired questions,<br />
+                                                        or<br />
+                                                        Display all the questions in the <b id="selectedProblemDatabase"></b> problem database</h3></div>
+                                                    
+                                               <%-- </div>--%>
 
-
-
+                                                
 
                                         <div class="modal-body text-center " id="modal_searchMethod">
 
-                                            
-                                            <div class="radio" id="div_featureSearch">
-                                                <input type="radio" name="optradio" id="radio_SearchAll" onclick="pickSearchMethod()"><h3>List All Questions in the selected 題庫 without picking features：</h3>
-                                            </div>
-                                            <div class="radio" id="div_searchAll">
-                                                <input type="radio" name="optradio" id="radio_featureSearch" onclick="pickSearchMethod()"><h3>Feature Search(特徵值搜尋)：</h3>
-                                            </div>
+                                          
+                                                <div class="  panel-body  " id="div_featureSearch">
+                                                    <input type="radio" name="optradio" id="radio_SearchAll" onclick="pickSearchMethod()"><h3>List All Questions in the selected 題庫 without picking features：</h3>
+                                               
+                                                     <div id="searchAllPanel" class="hideSearchPanel">
+                                                        <asp:Button ID="btnSearchALLQ_withoutPickingFeature" runat="server" Text="List All Questions" CssClass="btn btn-success" OnClick="btSubmit_Click" />
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class=" panel-body  " id="div_searchAll">
+                                                    <input type="radio" name="optradio" id="radio_featureSearch" onclick="pickSearchMethod()"><h3>Feature Search(特徵值搜尋)：</h3>
+                                                </div>
+
+                                         
                                             
 
 
-                                            <div id="searchAllPanel" class="hideSearchPanel">
-                                                <asp:Button ID="btnSearchALLQ_withoutPickingFeature" runat="server" Text="List All Questions" CssClass="btn btn-success" OnClick="btSubmit_Click" />
-                                            </div>
+                                           
                                             <div id="featureSearchPanel" class="hideSearchPanel" >
-                                                <asp:Panel ID="SearchMethodPanel" runat="server" Height="220px">
+                                                <asp:Panel ID="SearchMethodPanel" runat="server" Height="200px">
 
                                                     <asp:UpdatePanel ID="uppanelFeatureItem" runat="server" UpdateMode="Conditional">
                                                         <ContentTemplate>
@@ -415,18 +448,22 @@
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
 
-
-                                                <asp:Button ID="btFeatureSearch" runat="server" OnClick="btFeatureSearch_Click" Text="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" CssClass="btn btn-success " />
+                                                 <br />
+                                                <asp:Button ID="btFeatureSearch" CssClass="btn btn-success " runat="server" OnClientClick="return checkPanelFeatureItem_Empty();" OnClick="btFeatureSearch_Click" Text="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  />
+                                               
                                             </div>
                                         </div>
 
 
-                                    <div class="modal-footer text-center">
+                                        <div class="modal-footer text-center">
                                         <input type="button" id="BT_CancelP" value="Close" class="btn btn-danger btn-lg" />
 
                                     </div>
+                                        </div>
+                                    </div>
+                                   
                                 </div>
-                            </div>
+                   
             </div>
             <!--end copy group prompt!-->
 
