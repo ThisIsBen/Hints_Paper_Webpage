@@ -125,6 +125,15 @@
             </td>
         </tr>
         
+
+        <tr align="left">
+            <td class="subtitle">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input id="rbAI" type="radio" value="rbAI" name="rb" runat="server">Anatomy Image 題
+            </td>
+        </tr>
+
+
         <tr align="right">
             <td>
                 <input id="btnPre" class="button_continue" style="width: 150px; height: 30px" onclick="goBack()"

@@ -544,7 +544,7 @@ namespace PaperSystem
                 DataReceiver myReceiver = new DataReceiver();
                 int intContentSeq = myReceiver.getPaperContentMaxSeq(strPaperID) + 1;
                 SQLString mySQL = new SQLString();
-                mySQL.SaveToQuestionContent(strPaperID, strQID, "0", "2", hiddenQuestionMode.Value, intContentSeq.ToString());
+                mySQL.SaveToQuestionContent(strPaperID, strQID, "0", "7", hiddenQuestionMode.Value, intContentSeq.ToString());
             }
 
             //若從編輯考卷來，直接將問題新增至考卷裡 蕭凱 2014/3/25
@@ -554,7 +554,7 @@ namespace PaperSystem
                 SQLString mySQL = new SQLString();
                 //取得考卷題數
                 string strSeq = Convert.ToString(myReceiver.getPaperContentMaxSeq(strPaperID) + 1);
-                mySQL.SaveToQuestionContent(strPaperID, strQID, "0", "2", "General", strSeq);            
+                mySQL.SaveToQuestionContent(strPaperID, strQID, "0", "7", "General", strSeq);            
             }
             
         }

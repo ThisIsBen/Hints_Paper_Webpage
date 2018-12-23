@@ -268,6 +268,13 @@ namespace PaperSystem
                 strQuestionType = "7";
             }
 
+            else if (rbAI.Checked == true)
+            {
+                //Anatomy Image 題
+                strQuestionType = "9";
+            }
+
+
 
             //把QuestionType存入Session
             if (Session["QuestionType"] != null)
@@ -339,6 +346,22 @@ namespace PaperSystem
                     //     Response.Redirect("Paper_ProgramQuestionEditorNew.aspx?Opener=Paper_MainPage&GroupID=" + strGroupID + "&bModify=False");
                     // else
                     Response.Redirect("Paper_ProgramQuestionEditorNew.aspx?Opener=Paper_QuestionTypeNew&GroupID=" + strGroupID);
+                }
+
+
+
+
+                else if (strQuestionType == "9")
+                {
+                    //Anatomy Image 題
+                    // if (hiddenPreOpener.Value == "SelectPaperMode") //從ORCS課堂練習來
+                    //     Response.Redirect("Paper_ProgramQuestionEditorNew.aspx?Opener=Paper_MainPage&GroupID=" + strGroupID + "&bModify=False");
+                    // else
+
+                    //建立QID
+                    DataReceiver myReceiver = new DataReceiver();
+                    string strQID = strUserID + "_Q_" + myReceiver.getNowTime();
+                    Response.Redirect("../../../../IPC/IPC_Q.aspx?Opener=Paper_QuestionTypeNew" + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionDivisionID=" + strGroupDivisionID + "&strQuestionGroupID=" + strGroupID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName);
                 }
 
             }
