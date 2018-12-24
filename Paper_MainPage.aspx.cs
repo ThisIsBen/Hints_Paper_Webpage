@@ -1933,7 +1933,7 @@ namespace PaperSystem
                     //建立修改問題的Button
                     Button btnModifyText = new Button();
                     tcModify.Controls.Add(btnModifyText);
-                    btnModifyText.Style["width"] = "220px";
+                    btnModifyText.Style["width"] = "300px";
                     btnModifyText.ID = "btnModifyText-" + strQID;
                     btnModifyText.Text = "Check/Modify this AITypeQuestion";
                     btnModifyText.Click += new EventHandler(btnModifyText_Click);
