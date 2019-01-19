@@ -75,7 +75,7 @@
     <br />
     <br />
     <br />
-    <table id="body_content"  class="table table-bordered" align="center" style="width: 100%" cellpadding="10">
+    <table id="body_content"  class="table table-bordered table-striped" align="center" style="width: 100%" cellpadding="10">
         <tr>
             <td class="title">
                 Question type:
@@ -163,7 +163,7 @@
                     type="button" value="<< Back" name="btnPre">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="btnNext" class="button_continue" style="width: 150px; height: 30px" type="submit"
-                    value="Next >>" name="btnNext" runat="server">
+                    value="Next >>" name="btnNext" runat="server" onclick="if(!checkAITypeQuestion_bodyPartIsSelected()) return false;">
             </td>
         </tr>
     </table>
@@ -184,6 +184,16 @@
     </form>
 
     <script>
+
+
+
+        $(document).ready(function () {
+            //if AITypeQuestion radio btn is selected when the page is loaded
+            if (document.getElementById('rbAI').checked) {
+                //show the selectBodyPartForAITypeQuestionPanel for the teacher to choose which organ he wants to use for the AITypeQuestion.
+                document.getElementById("selectBodyPartForAITypeQuestionPanel").style.display = "block";
+            }
+        });
 
         $('input[type=radio][name=rb]').change(function () {
             if (this.value == 'rbAI') {
@@ -213,6 +223,23 @@
             document.getElementById("hiddenSelectedBodyPartForAITypeQuestion").value = $(this).attr('value');
            
         });
+
+        //double check if the user has selected a body part that he wants to use for the question
+        //if not, pop up a warning to remind him
+        function checkAITypeQuestion_bodyPartIsSelected() {
+
+            //we can't let the user create an AITypeQuestion without selecting which body part he wants to use for the question.
+            if (document.getElementById('rbAI').checked) {
+               
+                if (document.getElementById("hiddenSelectedBodyPartForAITypeQuestion").value != "")
+                { return true; }
+
+                else {
+
+                    alert('Please select the body part that you want to use for the new AITypeQuestion.');
+                }
+            }
+        }
     </script>
 </body>
 </html>
