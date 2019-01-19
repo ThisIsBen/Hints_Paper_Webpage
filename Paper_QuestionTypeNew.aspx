@@ -10,6 +10,9 @@
     <meta name="CODE_LANGUAGE" content="C#">
     <meta name="vs_defaultClientScript" content="JavaScript">
     <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+    <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="../../../Scripts/jquery-1.11.2.min.js"></script>
+    <script src="../../../bootstrap/js/bootstrap.min.js"></script>
 
    
 
@@ -72,7 +75,7 @@
     <br />
     <br />
     <br />
-    <table id="body_content" align="center" style="width: 400px" cellpadding="10">
+    <table id="body_content"  class="table table-bordered" align="center" style="width: 100%" cellpadding="10">
         <tr>
             <td class="title">
                 Question type:
@@ -129,10 +132,30 @@
         <tr align="left">
             <td class="subtitle">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="rbAI" type="radio" value="rbAI" name="rb" runat="server">Anatomy Image 題
+                <input id="rbAI" type="radio" value="rbAI" name="rb" runat="server" >Anatomy Image 題
+
+                 <!-- selectBodyPartForAITypeQuestionPanel -->
+                <div class="container" id="selectBodyPartForAITypeQuestionPanel" style="display: none;">
+                  <p>Choose the organ that you want to use for the question.</p>
+                 
+                 
+                   <div class="btn-group-vertical btn-group-lg">
+                    <input type='button' value='Knee' class="btn btn-primary"/>
+                   
+                    <input type='button' value='Neck'  class="btn btn-primary"/>
+                  </div>
+                     <div class="btn-group-vertical btn-group-lg">
+                          <input type='button' value='Brain' class="btn btn-primary"/>
+                         <input type='button' value='Stomach' class="btn btn-primary"/>
+                   </div>
+                </div>
             </td>
         </tr>
 
+       
+
+
+ 
 
         <tr align="right">
             <td>
@@ -155,7 +178,41 @@
         <input id="hiddenSectionName" type="hidden" name="hiddenSectionName" value="" runat="server">
         <input id="hiddenPaperID" type="hidden" name="hiddenPaperID" value="" runat="server">
         <input id="hiddenPreOpener" type="hidden" name="hiddenPreOpener" value="" runat="server">
+        <input id="hiddenSelectedBodyPartForAITypeQuestion" type="hidden" name="hiddenSelectedBodyPartForAITypeQuestion" value="" runat="server">
+
     </div>
     </form>
+
+    <script>
+
+        $('input[type=radio][name=rb]').change(function () {
+            if (this.value == 'rbAI') {
+                //show the selectBodyPartForAITypeQuestionPanel for the teacher to choose which organ he wants to use for the AITypeQuestion.
+                document.getElementById("selectBodyPartForAITypeQuestionPanel").style.display = "block";
+
+            }
+            else {
+
+                //hide the selectBodyPartForAITypeQuestionPanel 
+                document.getElementById("selectBodyPartForAITypeQuestionPanel").style.display = "none";
+            }
+        });
+
+
+        $(".btn").click(function () {
+
+            //recover all the body part button back to blue.
+            $(".btn").each(function () {
+                $(this).removeClass('btn-warning')
+            });
+
+            //mark the clicked body part button with orange.
+            $(this).addClass("btn-warning");
+
+            //store the selected body part to a hidden field for backend to access.
+            document.getElementById("hiddenSelectedBodyPartForAITypeQuestion").value = $(this).attr('value');
+           
+        });
+    </script>
 </body>
 </html>
