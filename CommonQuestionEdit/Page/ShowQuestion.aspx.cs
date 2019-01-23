@@ -82,7 +82,7 @@ namespace AuthoringTool.CommonQuestionEdit
             this.FindControl("PanelFeature").Controls.Add(LayoutTableForFeature);
             this.FindControl("Form1").Controls.Add(this.getEditQuestionButton());
 
-            //Ben 2017 11 3 存心分組
+            //Ben 2017 11 3 存新分組
             ShowSaveAsNewBtn();
 		}
 

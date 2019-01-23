@@ -244,10 +244,9 @@
         </tr>
         <tr width="100%">
             <td align="right">
-                <input id="btnSaveNextQuestion" style="width: 0px" type="button" name="btnSaveNextQuestion"
-                    runat="server" />
+                <input id="btnSaveNextQuestion" style="width: 0px" type="button" name="btnSaveNextQuestion" visible="false" runat="server"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="btnSaveNext" style="width: 0px" type="button" name="btnSaveNext" runat="server" />
+                <input id="btnSaveNext" visible="false"  style="width: 0px" type="button" name="btnSaveNext" runat="server" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="btnNextQuestion" style="width: 150px; cursor: hand; height: 30px" onclick="NextQuestion()"
                     type="button" value="Edit next question >>" name="btnNextQuestion" class="button_continue" runat="server" />
