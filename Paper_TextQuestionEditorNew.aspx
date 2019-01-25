@@ -244,9 +244,9 @@
         </tr>
         <tr width="100%">
             <td align="right">
-                <input id="btnSaveNextQuestion" style="width: 0px" type="button" name="btnSaveNextQuestion" visible="false" runat="server"/>
+                <input id="btnSaveNextQuestion" style="width: 0px; display:none;" type="button" name="btnSaveNextQuestion"  runat="server"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="btnSaveNext" visible="false"  style="width: 0px" type="button" name="btnSaveNext" runat="server" />
+                <input id="btnSaveNext"  style="width: 0px; display:none;" type="button" name="btnSaveNext" runat="server" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="btnNextQuestion" style="width: 150px; cursor: hand; height: 30px" onclick="NextQuestion()"
                     type="button" value="Edit next question >>" name="btnNextQuestion" class="button_continue" runat="server" />
@@ -401,17 +401,28 @@
 
 
             function checkBlankAnswerField() {
-                //we can't let the user create an AITypeQuestion without selecting which body part he wants to use for the question.
-                if (document.getElementById('txtAnswerData').value == "" || document.getElementById('txtQuestionData').value == "") {
 
-                    alert('Please the Question and the Answer field must not be blank.');
+                //to extract para in URL
+                var url = new URL(window.location.href);
+                if (url.searchParams.get("TypeOfQuestion") != null && url.searchParams.get("TypeOfQuestion") == "FillOutBlankQuestion") {
+                   
+                    //we can't let the user create an AITypeQuestion without selecting which body part he wants to use for the question.
+                    if (document.getElementById('txtAnswerEdit').value == "" || document.getElementById('txtQuestionEdit').value == "") {
 
-                }
-                else {
 
+                        alert('Please the Question and the Answer field must not be blank.');
+                       
+                        return false;
+                    }
                     
-                    return true;
+
                 }
+
+                
+                //if there is no blank fields, go to postback
+                return true;
+                
+                
             }
     </script>
 

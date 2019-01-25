@@ -378,10 +378,14 @@ namespace PaperSystem
 
                     //All the creation mechanism is the same as that of the 問答題
                     if (hiddenPreOpener.Value == "SelectPaperMode") //從ORCS課堂練習來
-                        Response.Redirect("Paper_TextQuestionEditorNew.aspx?Opener=Paper_MainPage&GroupID=" + strGroupID + "&bModify=False");
+                        Response.Redirect("Paper_TextQuestionEditorNew.aspx?Opener=Paper_MainPage&GroupID=" + strGroupID + "&bModify=False&TypeOfQuestion=FillOutBlankQuestion");
                     else
-                        Response.Redirect("Paper_TextQuestionEditorNew.aspx?Opener=Paper_QuestionTypeNew&GroupID=" + strGroupID);
+                        Response.Redirect("Paper_TextQuestionEditorNew.aspx?Opener=Paper_QuestionTypeNew&GroupID=" + strGroupID + "&TypeOfQuestion=FillOutBlankQuestion");
                 }
+
+
+
+
 
             }
             else

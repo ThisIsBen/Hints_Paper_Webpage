@@ -678,7 +678,7 @@ namespace PaperSystem
 
                 clsProgramQuestion clsProgramQuestionObj = new clsProgramQuestion();
 
-                //建立屬於此組別的問答題
+                //建立屬於此組別的程式題
                 if (Request.QueryString["SearchMode"] == "Group")
                 {
                     strSQL = clsProgramQuestionObj.getAllProgramTypeQuestion(strGroupID);
@@ -791,6 +791,128 @@ namespace PaperSystem
                     //此問卷沒有問答題的情形
                 }
                 dsProgramList.Dispose();
+            }
+            #endregion
+
+
+
+
+            #region 列出填空題
+
+
+            else if (SessionQuestionType == "" || SessionQuestionType == "10")
+            {
+
+
+
+
+
+                //建立屬於此組別的填空題
+                if (Request.QueryString["SearchMode"] == "Group")
+                {
+                    strSQL = mySQL.getGroupFillOutBlankQuestion(strGroupID);
+                }
+                else
+                {
+                    strSQL = mySQL.getFeatureFillOutBlankQuestion((DataTable)Session["dtSelectedFeatureItemResult"]);
+                    // (DataTable)Session["dtSelectedFeatureItemResult"]
+                }
+
+                DataSet dsTextList = sqldb.getDataSet(strSQL);
+
+                int intTextCount = 0;
+                if (dsTextList.Tables[0].Rows.Count > 0)
+                {
+                    for (int i = 0; i < dsTextList.Tables[0].Rows.Count; i++)
+                    {
+                        //取得此問題的QID
+                        string strQID = "";
+
+                        /*
+                        //Ben 取得此問題的cQuestionType
+                        string cQuestionType="";
+                        //Ben
+                        */
+
+                        try
+                        {
+                            strQID = dsTextList.Tables[0].Rows[i]["cQID"].ToString();
+                            /*
+                            //Ben 取得此問題的cQuestionType
+                            cQuestionType=dsTextList.Tables[0].Rows[i]["cQuestionType"].ToString();
+                            //Ben
+                            */
+                        }
+                        catch
+                        {
+                        }
+
+                        TableRow trQuestion = new TableRow();
+                        table.Rows.Add(trQuestion);
+
+                        //CheckBox
+                        TableCell tcCheck = new TableCell();
+                        trQuestion.Cells.Add(tcCheck);
+
+                        if (bAllowSelect == true)
+                        {
+                            CheckBox chText = new CheckBox();
+
+
+
+                            tcCheck.Controls.Add(chText);
+                            string strID = "";
+                            strID = "ch-" + strQID;
+                            chText.ID = strID;
+
+                            //如果此問題己經存在於Paper_Content，則CheckBox被勾選。
+                            chText.Checked = myReceiver.checkExistPaperContent(strPaperID, strQID);
+
+                            /*
+                            //Ben add checkedChange event to each 填空題checkbox
+                            chText.AutoPostBack = true;
+                            chText.CheckedChanged += new EventHandler(testchbox_CheckedChanged);
+                            //Ben
+                            */
+
+                        }
+
+                        //Question number
+                        intQuestionIndex += 1;
+                        TableCell tcTextNum = new TableCell();
+                        trQuestion.Cells.Add(tcTextNum);
+                        tcTextNum.Text = "Q" + intQuestionIndex.ToString() + ": ";
+
+                        //Question
+                        TableCell tcQuestion = new TableCell();
+                        trQuestion.Cells.Add(tcQuestion);
+                        string strQuestion = "";
+                        try
+                        {
+                            strQuestion = dsTextList.Tables[0].Rows[i]["cQuestion"].ToString();
+                        }
+                        catch
+                        {
+                        }
+                        tcQuestion.Text = strQuestion;
+
+                        //加入CSS
+                        intTextCount += 1;
+                        if ((intTextCount % 2) != 0)
+                        {
+                            trQuestion.Attributes.Add("Class", "header1_table_first_row");
+                        }
+                        else
+                        {
+                            trQuestion.Attributes.Add("Class", "header1_tr_even_row");
+                        }
+                    }
+                }
+                else
+                {
+                    //此問卷沒有填空題的情形
+                }
+                dsTextList.Dispose();
             }
             #endregion
         }
@@ -1793,6 +1915,106 @@ namespace PaperSystem
             }
             dsProgramList.Dispose();
             #endregion
+
+            #region 將所勾選的填空題儲存
+            //取得此組別的填空題
+           
+            if (Request.QueryString["SearchMode"] == "Group")
+            {
+                strSQL = mySQL.getGroupFillOutBlankQuestion(strGroupID);
+            }
+            else
+            {
+                strSQL = mySQL.getFeatureFillOutBlankQuestion((DataTable)Session["dtSelectedFeatureItemResult"]);
+                // (DataTable)Session["dtSelectedFeatureItemResult"]
+            }
+
+            dsTextList = sqldb.getDataSet(strSQL);
+
+            if (dsTextList.Tables[0].Rows.Count > 0 && (SessionQuestionType == "" || SessionQuestionType == "10"))
+            {
+                for (int i = 0; i < dsTextList.Tables[0].Rows.Count; i++)
+                {
+                    //取得QID
+                    string strQID = "";
+                    try
+                    {
+                        strQID = dsTextList.Tables[0].Rows[i]["cQID"].ToString();
+                    }
+                    catch
+                    {
+                    }
+
+                    //檢查此題目是否有被勾選
+                    bool bCheck = false;
+                    try
+                    {
+                        bCheck = ((CheckBox)(this.FindControl("Form1").FindControl("ch-" + strQID))).Checked;
+                    }
+                    catch
+                    {
+                        Response.Write("<span style='DISPLAY: none'>讀取" + strQID + "的CheckBox失敗</span>");
+                    }
+
+                    if (bCheck == true)
+                    {
+                        intTextCount += 1;
+
+                        //Standard score
+                        string strScore = "0";
+
+                        //QuestionType
+                        string strQuestionType = "";
+                        try
+                        {
+                            strQuestionType = dsTextList.Tables[0].Rows[i]["cQuestionType"].ToString();
+                        }
+                        catch
+                        {
+                        }
+
+                        //QuestionMode
+                        string strQuestionMode = "";
+                        try
+                        {
+                            strQuestionMode = dsTextList.Tables[0].Rows[i]["cQuestionMode"].ToString();
+                        }
+                        catch
+                        {
+                        }
+
+                        //Seq
+                        string strSeq = Convert.ToString(myReceiver.getPaperContentMaxSeq(strPaperID) + 1);
+
+                        //Question
+                        string strQuestion = "";
+                        try
+                        {
+                            strQuestion = dsTextList.Tables[0].Rows[i]["cQuestion"].ToString();
+                        }
+                        catch
+                        {
+                        }
+
+                        //將此題目的資料存入資料庫
+                        mySQL.SaveToQuestionContent(strPaperID, strQID, strScore, strQuestionType, strQuestionMode, strQuestion, strSeq);
+                    }
+                    else
+                    {
+                        //將資料自Paper_Conent刪除
+                        mySQL.DeleteFromQuestionContent(strPaperID, strQID);
+                    }
+                }
+            }
+            else
+            {
+                //此組別沒有填空題的情形
+            }
+            dsTextList.Dispose();
+            #endregion
+
+
+
             #region 20110407 暫時處理模式
             //20110407 因為程式運作模式 在新增題目時 若同一群組沒有一次選完題目 問題順序會無法照順序排
             //所以當新增完題目後 重新設定排序
