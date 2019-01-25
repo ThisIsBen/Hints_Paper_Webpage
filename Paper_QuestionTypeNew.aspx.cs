@@ -274,6 +274,11 @@ namespace PaperSystem
                 strQuestionType = "9";
             }
 
+            else if (rbFillOutBlank.Checked == true)
+            {
+                //填空題
+                strQuestionType = "10";
+            }
 
 
             //把QuestionType存入Session
@@ -361,7 +366,21 @@ namespace PaperSystem
                     //建立QID
                     DataReceiver myReceiver = new DataReceiver();
                     string strQID = strUserID + "_Q_" + myReceiver.getNowTime();
-                    Response.Redirect("../../../../IPC/IPC_Q.aspx?Opener=Paper_QuestionTypeNew" + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionDivisionID=" + strGroupDivisionID + "&strQuestionGroupID=" + strGroupID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&QuestionBodyPart=" + hiddenSelectedBodyPartForAITypeQuestion.Value);
+                    Response.Redirect("../../../../IPC/AITypeQuestion_EditingPage.aspx?Opener=Paper_QuestionTypeNew" + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionDivisionID=" + strGroupDivisionID + "&strQuestionGroupID=" + strGroupID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&QuestionBodyPart=" + hiddenSelectedBodyPartForAITypeQuestion.Value);
+                }
+
+
+
+
+                else if (strQuestionType == "10")
+                {
+                    //填空題
+
+                    //All the creation mechanism is the same as that of the 問答題
+                    if (hiddenPreOpener.Value == "SelectPaperMode") //從ORCS課堂練習來
+                        Response.Redirect("Paper_TextQuestionEditorNew.aspx?Opener=Paper_MainPage&GroupID=" + strGroupID + "&bModify=False");
+                    else
+                        Response.Redirect("Paper_TextQuestionEditorNew.aspx?Opener=Paper_QuestionTypeNew&GroupID=" + strGroupID);
                 }
 
             }

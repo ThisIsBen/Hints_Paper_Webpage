@@ -128,8 +128,8 @@
             </td>
         </tr>
         <tr>
-            <td>
-                Paper Essay Question Editor
+            <td id="editorTitle">
+                Paper Essay Question(問答題) Editor
             </td>
         </tr>
         <tr>
@@ -257,7 +257,7 @@
                 <input id="btnBack" style="width: 150px; cursor: hand; height: 30px" onclick="goBack()"
                     type="button" value="<< Back" name="btnBack" class="button_continue" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="btnNext" style="width: 150px; cursor: hand; height: 30px" onclick="NextStep()"
+                <input id="btnNext" style="width: 150px; cursor: hand; height: 30px" onclick=" if (!checkBlankAnswerField()) return false; NextStep();"
                     type="button" value="Next >>" name="btnNext" class="button_continue" onclick="return btnNext_onclick()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -276,6 +276,22 @@
     </form>
 
     <script language="javascript">
+
+        
+        //switch the editor title to the FillOutBlank(填空題) if the editor is currently used for the FillOutBlank(填空題)
+        //Because the 問答題 and the 填空題 share this editor page.
+        switchEditorTitleIfIsFillOutBlankQuestion();
+        
+
+        function switchEditorTitleIfIsFillOutBlankQuestion() {
+            //to extract para in URL
+            var url = new URL(window.location.href);
+            if (url.searchParams.get("TypeOfQuestion") != null && url.searchParams.get("TypeOfQuestion") == "FillOutBlankQuestion") {
+                document.getElementById("editorTitle").innerHTML = "Paper FillOutBlank Question(填空題) Editor"
+            }
+        }
+
+
 			editor_generate('txtQuestionEdit');
 
 			editor_generate('txtAnswerEdit');
@@ -384,6 +400,20 @@
                Player.Play();
             }
 
+
+            function checkBlankAnswerField() {
+                //we can't let the user create an AITypeQuestion without selecting which body part he wants to use for the question.
+                if (document.getElementById('txtAnswerData').value == "" || document.getElementById('txtQuestionData').value == "") {
+
+                    alert('Please the Question and the Answer field must not be blank.');
+
+                }
+                else {
+
+                    
+                    return true;
+                }
+            }
     </script>
 
     <%=strClientScript%>

@@ -152,7 +152,12 @@
             </td>
         </tr>
 
-       
+       <tr align="left">
+            <td class="subtitle">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input id="rbFillOutBlank" type="radio" value="rbFillOutBlank" name="rb" runat="server" />填空題
+            </td>
+        </tr>
 
 
  
@@ -237,8 +242,11 @@
                 else {
 
                     alert('Please select the body part that you want to use for the new AITypeQuestion.');
+                    
                 }
             }
+            // if the picked question type is not AITypeQuestion, we let it do postback to do corresponding work
+            return true;
         }
     </script>
 </body>

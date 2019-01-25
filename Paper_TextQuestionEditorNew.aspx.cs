@@ -495,7 +495,7 @@ namespace PaperSystem
         }
 
         /// <summary>
-        /// Save text question
+        /// Save the question for 問答題
         /// </summary>
         private void SaveQuestionText()
         {
@@ -549,11 +549,84 @@ namespace PaperSystem
             
         }
 
+        /// <summary>
+        /// Save the question for 填空題
+        /// </summary>
+        private void SaveFillOutBlankQuestion()
+        {
+            //儲存題目
+            clsFillOutBlankQuestion fillOutBlankQuestion = new clsFillOutBlankQuestion();
+            string strQTextContent = txtQuestionData.Text;//get the question description from question textarea
+            string strATextContent = txtAnswerData.Text;//get the correct answer from answer textarea
+            strQTextContent = strQTextContent.Replace("&lt;", "<");
+            strQTextContent = strQTextContent.Replace("&gt;", ">");
+            strATextContent = strATextContent.Replace("&lt;", "<");
+            strATextContent = strATextContent.Replace("&gt;", ">");
+            /*
+            ////use JS alert() in C#
+            ScriptManager.RegisterStartupScript(
+             this,
+             typeof(Page),
+             "Alert",
+             "<script>alert('aa: " + strATextContent + "');</script>",
+             false);
+            ///////
+            */
+
+            //store the question description and correct answer to the question to DB.
+            fillOutBlankQuestion.saveQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value, null);
+
+            //儲存問題難易度
+            int iQuestionLevel = AuthoringTool.QuestionEditLevel.QuestionLevel.QuestionLevelName_SELECT_QuestionLevel(ddlQuestionLevel.SelectedValue);
+            AuthoringTool.QuestionEditLevel.QuestionLevel.INSERT_QuestionLevel(strQID, iQuestionLevel);
+
+            //儲存問題的病徵
+            AuthoringTool.QuestionEditLevel.QuestionLevel.QuestionLevel_INSERT_QuestionSymptoms(strQID, ddlSymptoms.SelectedValue);
+
+            //如果是Specific題目則需儲存一筆資料至Paper_Content
+            if (hiddenQuestionMode.Value == "Specific")
+            {
+                DataReceiver myReceiver = new DataReceiver();
+                int intContentSeq = myReceiver.getPaperContentMaxSeq(strPaperID) + 1;
+                SQLString mySQL = new SQLString();
+                mySQL.SaveToQuestionContent(strPaperID, strQID, "0", "10", hiddenQuestionMode.Value, intContentSeq.ToString());
+            }
+
+            //若從編輯考卷來，直接將問題新增至考卷裡 蕭凱 2014/3/25
+            if (Session["IsFromClassExercise"] != null && Session["IsFromClassExercise"].ToString() == "True")
+            {
+                DataReceiver myReceiver = new DataReceiver();
+                SQLString mySQL = new SQLString();
+                //取得考卷題數
+                string strSeq = Convert.ToString(myReceiver.getPaperContentMaxSeq(strPaperID) + 1);
+                mySQL.SaveToQuestionContent(strPaperID, strQID, "0", "10", "General", strSeq);
+            }
+
+        }
+
+
         private void btnSaveNext_ServerClick(object sender, EventArgs e)
         {
             
-            //store the question description and correct answer to the question to DB.
-            SaveQuestionText();
+            //Because the 問答題 and the 填空題 share this editor page.
+            //(The difference is that the 填空題 must have a specific correct answer, and the student's answer should be exactly the same as this correct answer.)
+            //So, we need to know currently this page is used for the 問答題 or the 填空題, and do the corresponding work to store the new question.
+
+            //if the page is currently used to create a new 填空題
+            if (Request.QueryString["TypeOfQuestion"] == "FillOutBlankQuestion")
+            {
+
+                //store the question description and correct answer of the the 填空題 to the question to DB.
+                SaveFillOutBlankQuestion();
+            }
+
+            //if the page is currently used to create a new 問答題
+            else
+            {
+                //store the question description and correct answer of the the 問答題 to the question to DB.
+                SaveQuestionText();
+            }
+            
             
             //store selected features for future feature search use.
             ////////沒有存入FeatureForSelect table 中
