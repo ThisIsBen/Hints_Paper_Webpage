@@ -573,8 +573,16 @@ namespace PaperSystem
             ///////
             */
 
+            //Ben 2019/1/30 in Max IRS we allow the teacher to create FillOutBlankSelection question, which provide a dropdownlist with options for the students to choose from.
+            // I added 2 more parameters,bWithSelectionOptions and strDomain, to the function that creates FillOutBlank question.
+            //These 2 parameters has the default value so if you don't need it, you don't need to pass the value for it.
+            //bWithSelectionOptions is used to indicate if it is a FillOutBlankSeletion question.
+            //strDomain is used to store the body part or the domain picked by the teacher so that we can display the corresponding options for the students to choose from.
+            bool bWithSelectionOptions = false; // We temporarily hard-code it to false because current C# version does not support default parameters
+            string strDomain = "";// We temporarily hard-code it to "" because current C# version does not support default parameters
+
             //store the question description and correct answer to the question to DB.
-            fillOutBlankQuestion.saveQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value, null);
+            fillOutBlankQuestion.saveQuestionAnswer(strQID, strAID, strQTextContent, strATextContent, strUserID, strPaperID, strGroupDivisionID, strGroupID, hiddenQuestionMode.Value, null, bWithSelectionOptions,strDomain);
 
             //儲存問題難易度
             int iQuestionLevel = AuthoringTool.QuestionEditLevel.QuestionLevel.QuestionLevelName_SELECT_QuestionLevel(ddlQuestionLevel.SelectedValue);
