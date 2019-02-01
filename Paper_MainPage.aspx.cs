@@ -3218,7 +3218,7 @@ namespace PaperSystem
             {
                 //找出此Group屬於的DivisionID
 
-                Response.Redirect("../../../../IPC/IPC_Q.aspx?Opener=Paper_QuestionTypeNew" + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&viewContent=Yes");
+                Response.Redirect("../../../../IPC/AITypeQuestion_EditingPage.aspx?Opener=Paper_QuestionTypeNew" + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&viewContent=Yes");
             }
 
 

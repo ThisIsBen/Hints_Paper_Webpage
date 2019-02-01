@@ -242,7 +242,7 @@
                 else {
 
                     alert('Please select the body part that you want to use for the new AITypeQuestion.');
-                    
+                    return false;
                 }
             }
             // if the picked question type is not AITypeQuestion, we let it do postback to do corresponding work
