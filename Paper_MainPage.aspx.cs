@@ -3218,7 +3218,11 @@ namespace PaperSystem
             {
                 //找出此Group屬於的DivisionID
 
-                Response.Redirect("../../../../IPC/AITypeQuestion_EditingPage.aspx?Opener=Paper_QuestionTypeNew" + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&viewContent=Yes");
+                //get the first QuestionBodyPart Of The AITypeQuestion, which is stored in the format like "Knee,Stomach" in the AITypeQuestionCorrectAnswer datatable in NewVersionHintsDB.
+                string firstQuestionBodyPart=getFirstQuestionBodyPartOfTheQuestion(strQID);
+
+                //direct to the AITypeQuestion Editing Page
+                Response.Redirect("../../../../IPC/AITypeQuestion_EditingPage.aspx?Opener=Paper_QuestionTypeNew&QuestionBodyPart="+firstQuestionBodyPart + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&viewContent=Yes");
             }
 
 
@@ -3226,6 +3230,35 @@ namespace PaperSystem
             //呼叫Paper_TextQuestionEditor.aspx
             Response.Redirect("Paper_TextQuestionEditorNew.aspx?QID=" + strQID + "&Opener=Paper_MainPage&bModify=True");
         }
+
+
+
+        //get the first QuestionBodyPart Of The AITypeQuestion, which is stored in the format like "Knee,Stomach" in the AITypeQuestionCorrectAnswer datatable in NewVersionHintsDB.
+        private string getFirstQuestionBodyPartOfTheQuestion(string strQID)
+        {
+
+            string strSQL = string.Format("Select * from AITypeQuestionCorrectAnswer where cQID = '{0}'", strQID);
+            DataSet ds = sqldb.getDataSet(strSQL);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                string firstQuestionBodyPartOfTheQuestion = ds.Tables[0].Rows[0]["QuestionBodyPart"].ToString().Split(',')[0];
+                ds.Dispose();
+                return firstQuestionBodyPartOfTheQuestion;
+            }
+           
+            else
+            {
+                ds.Dispose();
+                return "";
+            }
+
+            
+
+
+
+        }
+
+
 
         private void btnDeleteText_Click(object sender, EventArgs e)
         {
