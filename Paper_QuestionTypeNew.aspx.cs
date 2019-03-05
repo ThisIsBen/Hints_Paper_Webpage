@@ -366,7 +366,7 @@ namespace PaperSystem
                     //建立QID
                     DataReceiver myReceiver = new DataReceiver();
                     string strQID = strUserID + "_Q_" + myReceiver.getNowTime();
-                    Response.Redirect("../../../../IPC/AITypeQuestion_EditingPage.aspx?Opener=Paper_QuestionTypeNew" + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionDivisionID=" + strGroupDivisionID + "&strQuestionGroupID=" + strGroupID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&QuestionBodyPart=" + hiddenSelectedBodyPartForAITypeQuestion.Value);
+                    Response.Redirect("../../../../IPC/AITypeQuestion_EditingPage.aspx?Opener=Paper_QuestionTypeNew" + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionDivisionID=" + strGroupDivisionID + "&strQuestionGroupID=" + strGroupID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&strUserID=" + strUserID + "&QuestionBodyPart=" + hiddenSelectedBodyPartForAITypeQuestion.Value);
                 }
 
 

@@ -3222,7 +3222,7 @@ namespace PaperSystem
                 string firstQuestionBodyPart=getFirstQuestionBodyPartOfTheQuestion(strQID);
 
                 //direct to the AITypeQuestion Editing Page
-                Response.Redirect("../../../../IPC/AITypeQuestion_EditingPage.aspx?Opener=Paper_QuestionTypeNew&QuestionBodyPart="+firstQuestionBodyPart + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&viewContent=Yes");
+                Response.Redirect("../../../../IPC/AITypeQuestion_EditingPage.aspx?Opener=Paper_QuestionTypeNew&QuestionBodyPart=" + firstQuestionBodyPart + "&strQID=" + strQID + "&strPaperID=" + strPaperID + "&strQuestionMode=" + hiddenQuestionMode.Value + "&cCaseID=" + strCaseID + "&cSectionName=" + strSectionName + "&strUserID=" + strUserID + "&viewContent=Yes");
             }
 
 
