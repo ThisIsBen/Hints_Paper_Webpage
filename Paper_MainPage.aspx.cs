@@ -3446,7 +3446,9 @@ namespace PaperSystem
 
             //Session["PreviousPageURL"] = HttpContext.Current.Request.Url.AbsoluteUri;
             //Response.Redirect(strURL);
-            string strJSCode = "window.open('" + strURL + "','開啟題庫系統新增題目','scrollbars=yes,resizable=yes,directories=0,location=1,menubar=0,status=0,titlebar=1,toolbar=0,fullscreen=yes')";
+            //string strJSCode = "window.open('" + strURL + "','開啟題庫系統新增題目','scrollbars=yes,resizable=yes,directories=0,location=1,menubar=0,status=0,titlebar=1,toolbar=0,fullscreen=yes')";
+            //open the 題庫選擇頁面 in a new tab instead of a new window.
+            string strJSCode = "window.open('" + strURL + "','開啟題庫系統新增題目')";
             Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "", "<script>" + strJSCode + "</script>");
         }
         //「Finish」按鈕事件
