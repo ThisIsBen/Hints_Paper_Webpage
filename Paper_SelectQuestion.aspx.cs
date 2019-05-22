@@ -104,7 +104,8 @@ namespace PaperSystem
                 strSQL = mySQL.getGroupSelectionWithKeyWordsQuestion(strGroupID);
             }
 
-
+            /*
+             * //alert the QuestionType that is currently stored in the session var,'SessionQuestionType'
             ////use JS alert() in C#
             ScriptManager.RegisterStartupScript(
              this,
@@ -112,7 +113,7 @@ namespace PaperSystem
              "Alert",
             "<script>alert('SessionQuestionType: " + SessionQuestionType + "');</script>",
              false);
-
+            */
             //Ben test 
             //SessionQuestionType = "2";
 
